@@ -1,0 +1,42 @@
+#video {
+  width:320px;
+  height:240px;
+    transform: rotateY(180deg);
+    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+    -moz-transform:rotateY(180deg); /* Firefox */
+}
+
+#photo {
+  width:320px;
+  height:240px;
+}
+
+#canvas {
+  display:none;
+}
+
+.camera {
+  width: 340px;
+  margin: auto;
+  text-align: center;
+}
+
+#output {
+  width: 1020px;
+  margin: auto;
+}
+
+#output > img {
+    margin: 10px;
+}
+
+#startbutton, #stopbutton {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.hidebutton {
+    display: none;
+    width: 0px;
+    height: 0px;
+}
