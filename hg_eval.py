@@ -14,7 +14,7 @@ import hg
 
 FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_string('eval_dir', '/hg_eval',
+tf.app.flags.DEFINE_string('eval_dir', 'hg_eval/',
                            """Directory where to write event logs.""")
 tf.app.flags.DEFINE_string('eval_data', 'test',
                            """Either 'test' or 'train_eval'.""")
