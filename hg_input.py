@@ -147,7 +147,10 @@ def inputs(eval_data, data_dir, batch_size):
 
   # Read examples from files in the filename queue.
   image, label = read_image(filename_queue)
-  reshaped_image = tf.cast(image, tf.float32)
+
+  resized_image = tf.image.resize_images(image, (IMAGE_HEIGHT, IMAGE_WIDTH))
+
+  reshaped_image = tf.cast(resized_image, tf.float32)
 
   # Subtract off the mean and divide by the variance of the pixels.
   float_image = tf.image.per_image_standardization(reshaped_image)
