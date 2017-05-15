@@ -144,3 +144,4 @@ cv_data/
 
 # Checkpoint
 checkpoint_dir
+hg_eval
