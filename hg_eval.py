@@ -39,6 +39,7 @@ def eval_once(saver, summary_writer, top_k_op, summary_op):
   """
   with tf.Session() as sess:
     ckpt = tf.train.get_checkpoint_state(FLAGS.checkpoint_dir)
+    sess.run(tf.local_variables_initializer())
     if ckpt and ckpt.model_checkpoint_path:
       # Restores from checkpoint
       saver.restore(sess, ckpt.model_checkpoint_path)
@@ -115,6 +116,9 @@ def evaluate():
 
 
 def main(argv=None):  # pylint: disable=unused-argument
+  if tf.gfile.Exists(FLAGS.eval_dir):
+    tf.gfile.DeleteRecursively(FLAGS.eval_dir)
+  tf.gfile.MakeDirs(FLAGS.eval_dir)
   evaluate()
 
 
