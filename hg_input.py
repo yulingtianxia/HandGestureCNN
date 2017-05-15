@@ -3,8 +3,8 @@ import os
 import tensorflow as tf
 
 
-IMAGE_HEIGHT = 240
-IMAGE_WIDTH = 320
+IMAGE_HEIGHT = 120
+IMAGE_WIDTH = 160
 
 # Global constants describing the HandGesture data set.
 NUM_CLASSES = 5
@@ -85,7 +85,10 @@ def distorted_inputs(data_dir, batch_size):
 
   # Read examples from files in the filename queue.
   image, label = read_image(filename_queue)
-  reshaped_image = tf.cast(image, tf.float32)
+
+  resized_image = tf.image.resize_images(image, (IMAGE_HEIGHT, IMAGE_WIDTH))
+
+  reshaped_image = tf.cast(resized_image, tf.float32)
 
   # Image processing for training the network. Note the many random
   # distortions applied to the image.
