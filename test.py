@@ -3,6 +3,7 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
 from keras.models import Sequential, Model
 from keras.layers import Dropout, Flatten, Dense, Input
+from keras.utils import to_categorical
 import numpy as np
 
 # path to the model weights files.
@@ -50,12 +51,12 @@ def train_top_model():
     train_data = np.load(open('bottleneck_features_train.npy'))
     train_labels = np.array(
         [0] * 446 + [1] * 395 + [2] * 307 + [3] * 301 + [4] * 369)
-    train_labels = keras.utils.to_categorical(train_labels, num_classes=5)
+    train_labels = to_categorical(train_labels, num_classes=5)
 
     validation_data = np.load(open('bottleneck_features_validation.npy'))
     validation_labels = np.array(
         [0] * 33 + [1] * 30 + [2] * 60 + [3] * 34 + [4] * 42)
-    validation_labels = keras.utils.to_categorical(validation_labels, num_classes=5)
+    validation_labels = to_categorical(validation_labels, num_classes=5)
 
     model = Sequential()
     model.add(Flatten(input_shape=train_data.shape[1:]))
