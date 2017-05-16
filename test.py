@@ -62,7 +62,7 @@ def train_top_model():
     model.add(Flatten(input_shape=train_data.shape[1:]))
     model.add(Dense(256, activation='relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(1, activation='sigmoid'))
+    model.add(Dense(5, activation='sigmoid'))
 
     model.compile(optimizer='rmsprop',
                   loss='binary_crossentropy', metrics=['accuracy'])
@@ -86,7 +86,7 @@ top_model = Sequential()
 top_model.add(Flatten(input_shape=base_model.output_shape[1:]))
 top_model.add(Dense(256, activation='relu'))
 top_model.add(Dropout(0.5))
-top_model.add(Dense(1, activation='sigmoid'))
+top_model.add(Dense(5, activation='sigmoid'))
 
 # note that it is necessary to start with a fully-trained
 # classifier, including the top classifier,
