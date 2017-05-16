@@ -1,19 +1,19 @@
 from keras import applications
 from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
-from keras.models import Sequential
-from keras.layers import Dropout, Flatten, Dense
+from keras.models import Sequential, Model
+from keras.layers import Dropout, Flatten, Dense, Input
 import numpy as np
 
 # path to the model weights files.
 top_model_weights_path = 'fc_model.h5'
 # dimensions of our images.
-img_width, img_height = 160, 120
+img_width, img_height = 150, 150
 
-train_data_dir = 'training_data'
-validation_data_dir = 'cv_data'
-nb_train_samples = 2048
-nb_validation_samples = 51
+train_data_dir = 'data/train'
+validation_data_dir = 'data/validation'
+nb_train_samples = 2000
+nb_validation_samples = 800
 epochs = 50
 batch_size = 16
 
@@ -21,7 +21,7 @@ def save_bottlebeck_features():
     datagen = ImageDataGenerator(rescale=1. / 255)
 
     # build the VGG16 network
-    model = applications.VGG16(include_top=False, weights='imagenet')
+    model = applications.InceptionV3(include_top=False, weights='imagenet')
 
     generator = datagen.flow_from_directory(
         train_data_dir,
@@ -49,11 +49,11 @@ def save_bottlebeck_features():
 def train_top_model():
     train_data = np.load(open('bottleneck_features_train.npy'))
     train_labels = np.array(
-        [0] * 354 + [1] * 418 + [2] * 421 + [3] * 318 + [4] * 437)
+        [0] * (nb_train_samples / 2) + [1] * (nb_train_samples / 2))
 
     validation_data = np.load(open('bottleneck_features_validation.npy'))
     validation_labels = np.array(
-        [0] * 7 + [1] * 12 + [2] * 13 + [3] * 10 + [4] * 9)
+        [0] * (nb_validation_samples / 2) + [1] * (nb_validation_samples / 2))
 
     model = Sequential()
     model.add(Flatten(input_shape=train_data.shape[1:]))
@@ -74,12 +74,13 @@ save_bottlebeck_features()
 train_top_model()
 
 # build the VGG16 network
-model = applications.VGG16(weights='imagenet', include_top=False)
+input_tensor = Input(shape=(img_height, img_width, 3))
+base_model = applications.InceptionV3(weights='imagenet', include_top=False, input_tensor=input_tensor)
 print('Model loaded.')
 
 # build a classifier model to put on top of the convolutional model
 top_model = Sequential()
-top_model.add(Flatten(input_shape=model.output_shape[1:]))
+top_model.add(Flatten(input_shape=base_model.output_shape[1:]))
 top_model.add(Dense(256, activation='relu'))
 top_model.add(Dropout(0.5))
 top_model.add(Dense(1, activation='sigmoid'))
@@ -90,11 +91,12 @@ top_model.add(Dense(1, activation='sigmoid'))
 top_model.load_weights(top_model_weights_path)
 
 # add the model on top of the convolutional base
-model.add(top_model)
+model = Model(inputs=base_model.input, outputs=top_model(base_model.output))
 
 # set the first 25 layers (up to the last conv block)
 # to non-trainable (weights will not be updated)
-for layer in model.layers[:25]:
+print base_model.summary()
+for layer in model.layers[:len(base_model.layers)-5]:
     layer.trainable = False
 
 # compile the model with a SGD/momentum optimizer
@@ -105,14 +107,13 @@ model.compile(loss='binary_crossentropy',
 
 # prepare data augmentation configuration
 train_datagen = ImageDataGenerator(
-    rotation_range=40,
-    width_shift_range=0.1,
-    height_shift_range=0.1,
-    rescale=1. / 255,
-    shear_range=0.2,
-    zoom_range=0.2,
-    horizontal_flip=True,
-    fill_mode='nearest')
+        rotation_range=40,
+        width_shift_range=0.2,
+        height_shift_range=0.2,
+        shear_range=0.2,
+        zoom_range=0.2,
+        horizontal_flip=True,
+        fill_mode='nearest')
 
 test_datagen = ImageDataGenerator(rescale=1. / 255)
 
@@ -131,7 +132,7 @@ validation_generator = test_datagen.flow_from_directory(
 # fine-tune the model
 model.fit_generator(
     train_generator,
-    samples_per_epoch=nb_train_samples,
+    steps_per_epoch=nb_train_samples,
     epochs=epochs,
     validation_data=validation_generator,
-    nb_val_samples=nb_validation_samples)
+    validation_steps=nb_validation_samples)
