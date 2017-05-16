@@ -50,10 +50,12 @@ def train_top_model():
     train_data = np.load(open('bottleneck_features_train.npy'))
     train_labels = np.array(
         [0] * 446 + [1] * 395 + [2] * 307 + [3] * 301 + [4] * 369)
+    train_labels = keras.utils.to_categorical(train_labels, num_classes=5)
 
     validation_data = np.load(open('bottleneck_features_validation.npy'))
     validation_labels = np.array(
         [0] * 33 + [1] * 30 + [2] * 60 + [3] * 34 + [4] * 42)
+    validation_labels = keras.utils.to_categorical(validation_labels, num_classes=5)
 
     model = Sequential()
     model.add(Flatten(input_shape=train_data.shape[1:]))
@@ -121,13 +123,13 @@ train_generator = train_datagen.flow_from_directory(
     train_data_dir,
     target_size=(img_height, img_width),
     batch_size=batch_size,
-    class_mode='binary')
+    class_mode='categorical')
 
 validation_generator = test_datagen.flow_from_directory(
     validation_data_dir,
     target_size=(img_height, img_width),
     batch_size=batch_size,
-    class_mode='binary')
+    class_mode='categorical')
 
 # fine-tune the model
 model.fit_generator(
