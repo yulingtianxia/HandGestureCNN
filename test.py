@@ -12,8 +12,8 @@ img_width, img_height = 150, 150
 
 train_data_dir = 'data/train'
 validation_data_dir = 'data/validation'
-nb_train_samples = 2000
-nb_validation_samples = 800
+nb_train_samples = 1818
+nb_validation_samples = 199
 epochs = 50
 batch_size = 16
 
@@ -49,11 +49,11 @@ def save_bottlebeck_features():
 def train_top_model():
     train_data = np.load(open('bottleneck_features_train.npy'))
     train_labels = np.array(
-        [0] * (nb_train_samples / 2) + [1] * (nb_train_samples / 2))
+        [0] * 446 + [1] * 395 + [2] * 307 + [3] * 301 + [4] * 369)
 
     validation_data = np.load(open('bottleneck_features_validation.npy'))
     validation_labels = np.array(
-        [0] * (nb_validation_samples / 2) + [1] * (nb_validation_samples / 2))
+        [0] * 33 + [1] * 30 + [2] * 60 + [3] * 34 + [4] * 42)
 
     model = Sequential()
     model.add(Flatten(input_shape=train_data.shape[1:]))
