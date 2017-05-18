@@ -1,7 +1,7 @@
 (function() {
 
-  var width = 320;
-  var height = 0;
+  var width = 300;
+  var height = 300;
   var streaming = false;
 
   var video = null;
@@ -48,13 +48,13 @@
 
     video.addEventListener('canplay', function(ev){
       if (!streaming) {
-        height = video.videoHeight / (video.videoWidth/width);
+        // height = video.videoHeight / (video.videoWidth/width);
 
         // Firefox currently has a bug where the height can't be read from
         // the video, so we will make assumptions if this happens.
 
         if (isNaN(height)) {
-          height = width / (4/3);
+          // height = width / (4/3);
         }
 
         video.setAttribute('width', width);
