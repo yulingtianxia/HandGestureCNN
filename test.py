@@ -8,8 +8,9 @@ import numpy as np
 
 # path to the model weights files.
 top_model_weights_path = 'fc_model.h5'
+full_model_weights_path = 'full_model.h5'
 # dimensions of our images.
-img_width, img_height = 300, 300
+img_width, img_height = 299, 299
 
 train_data_dir = 'data/train'
 validation_data_dir = 'data/validation'
@@ -62,10 +63,10 @@ def train_top_model():
     model.add(Flatten(input_shape=train_data.shape[1:]))
     model.add(Dense(256, activation='relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(5, activation='sigmoid'))
+    model.add(Dense(5, activation='softmax'))
 
-    model.compile(optimizer='rmsprop',
-                  loss='binary_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
+                  loss='categorical_crossentropy', metrics=['accuracy'])
 
     model.fit(train_data, train_labels,
               epochs=epochs,
@@ -73,7 +74,7 @@ def train_top_model():
               validation_data=(validation_data, validation_labels))
     model.save_weights(top_model_weights_path)
 
-save_bottlebeck_features()
+# save_bottlebeck_features()
 train_top_model()
 
 # build the VGG16 network
@@ -86,8 +87,8 @@ top_model = Sequential()
 top_model.add(Flatten(input_shape=base_model.output_shape[1:]))
 top_model.add(Dense(256, activation='relu'))
 top_model.add(Dropout(0.5))
-top_model.add(Dense(5, activation='sigmoid'))
-
+top_model.add(Dense(5, activation='softmax'))
+# print top_model.summary()
 # note that it is necessary to start with a fully-trained
 # classifier, including the top classifier,
 # in order to successfully do fine-tuning
@@ -98,13 +99,13 @@ model = Model(inputs=base_model.input, outputs=top_model(base_model.output))
 
 # set the first 25 layers (up to the last conv block)
 # to non-trainable (weights will not be updated)
-print base_model.summary()
+
 for layer in model.layers[:len(base_model.layers)-5]:
     layer.trainable = False
 
 # compile the model with a SGD/momentum optimizer
 # and a very slow learning rate.
-model.compile(loss='binary_crossentropy',
+model.compile(loss='categorical_crossentropy',
               optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
               metrics=['accuracy'])
 
@@ -139,3 +140,13 @@ model.fit_generator(
     epochs=epochs,
     validation_data=validation_generator,
     validation_steps=nb_validation_samples)
+# print model.predict_generator(validation_generator, steps=1)
+
+model.save_weights(full_model_weights_path)
+
+# from keras.utils import plot_model
+# plot_model(model, to_file='model.png')
+# from IPython.display import SVG
+# from keras.utils.vis_utils import model_to_dot
+#
+# SVG(model_to_dot(model).create(prog='dot', format='svg'))
