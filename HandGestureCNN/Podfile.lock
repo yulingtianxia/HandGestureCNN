@@ -1,0 +1,21 @@
+PODS:
+  - HDF5Kit (0.2.0)
+
+DEPENDENCIES:
+  - HDF5Kit (from `https://github.com/aleph7/HDF5Kit.git`)
+
+EXTERNAL SOURCES:
+  HDF5Kit:
+    :git: https://github.com/aleph7/HDF5Kit.git
+
+CHECKOUT OPTIONS:
+  HDF5Kit:
+    :commit: 0a15376bbf6ec974816f3beb57014d3026e6f60f
+    :git: https://github.com/aleph7/HDF5Kit.git
+
+SPEC CHECKSUMS:
+  HDF5Kit: 6e84f7e84de9e86df56e2d1090dac9f4e8ffc224
+
+PODFILE CHECKSUM: a92861ffe0d42d1731050050aa7272b290ca53d1
+
+COCOAPODS: 1.0.0
