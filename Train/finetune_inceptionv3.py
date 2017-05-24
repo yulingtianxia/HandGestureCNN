@@ -55,6 +55,7 @@ model.compile(loss='categorical_crossentropy',
 
 # prepare data augmentation configuration
 train_datagen = ImageDataGenerator(
+        rescale=1./255,
         rotation_range=40,
         width_shift_range=0.2,
         height_shift_range=0.2,
