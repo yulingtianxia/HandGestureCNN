@@ -1023,15 +1023,11 @@ class Inception3Net{
 
         
         // logits
-//        aPoolLogits = MPSCNNPoolingAverage(device: device!, kernelWidth: 8, kernelHeight: 8, strideInPixelsX: 4, strideInPixelsY: 4)
-//        aPoolLogits.offset = MPSOffset( x: 4, y: 4, z: 0 )
-//        aPoolLogits.edgeMode = MPSImageEdgeMode.clamp
-        
         fc0 = SlimMPSCNNFullyConnected(kernelWidth: 8,
                                        kernelHeight: 8,
                                        inputFeatureChannels: 2048,
                                        outputFeatureChannels: 256,
-                                       neuronFilter: nil,
+                                       neuronFilter: relu,
                                        device: device,
                                        kernelParamsBinaryName: "fc1")
         
@@ -1923,7 +1919,6 @@ class Inception3Net{
     
     
     // MPSImageDescriptor for final logits generating layers
-//    let fp0id = MPSImageDescriptor(channelFormat: textureFormat, width: 1, height: 1, featureChannels: 2048)
     let fc0id = MPSImageDescriptor(channelFormat: textureFormat, width: 1, height: 1, featureChannels: 256)
     
     var fc0Image, fc1Image : MPSTemporaryImage!
@@ -1939,13 +1934,10 @@ class Inception3Net{
         // Temporary images are designed to be efficiently created as needed, used a few times
         // and thrown away almost immediately
         
-        
-//        fp0Image     = MPSTemporaryImage(commandBuffer: commandBuffer, imageDescriptor: fp0id)
         fc0Image     = MPSTemporaryImage(commandBuffer: commandBuffer, imageDescriptor: fc0id)
         fc1Image     = MPSTemporaryImage(commandBuffer: commandBuffer, imageDescriptor: sftid)
         
         // encode layers to metal commandBuffer
-//        aPoolLogits.encode  (commandBuffer: commandBuffer, sourceImage: image10,  destinationImage: fp0Image)
         fc0.encode    (commandBuffer: commandBuffer, sourceImage: image10, destinationImage: fc0Image)
         fc1.encode    (commandBuffer: commandBuffer, sourceImage: fc0Image, destinationImage: fc1Image)
         softmax.encode(commandBuffer: commandBuffer, sourceImage: fc1Image, destinationImage: sftImage)
