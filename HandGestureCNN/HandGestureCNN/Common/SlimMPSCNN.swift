@@ -275,9 +275,8 @@ class SlimMPSCNNFullyConnected: MPSCNNFullyConnected{
     }
 }
 
+// Read parameters from HDF5 file and store to dat file in Tmp directory
 func extractHDF5(h5Name: String) {
-    // Read parameters from HDF5 file and store to dat file in Tmp directory
-    
     // MARK: Parse HDF5 file
     guard let path = Bundle.main.path(forResource: h5Name, ofType: "h5") else {
         fatalError("Failed to get a path")
@@ -292,9 +291,6 @@ func extractHDF5(h5Name: String) {
     guard let layerNames = try? layerNamesStringAttribute.read() else {
         fatalError("Failed to get layer names")
     }
-    //      guard let layerNames = file.openGroup("/")?.objectNames() else {
-    //        fatalError("Failed to open group name '/' and failed to get layer names")
-    //      }
     
     // count used for file name later
     var countOfConvLayer = 0
