@@ -210,6 +210,7 @@
 		A44277FC1ED15FFB002B798B /* VideoCameraType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44277F91ED15FFB002B798B /* VideoCameraType.swift */; };
 		A44277FD1ED15FFB002B798B /* VideoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44277FA1ED15FFB002B798B /* VideoCapture.swift */; };
 		A44278671ED18245002B798B /* fc_model.h5 in Resources */ = {isa = PBXBuildFile; fileRef = A44278661ED17C2B002B798B /* fc_model.h5 */; };
+		A46398B81EDAF8D600CCB20B /* full_model.h5 in Resources */ = {isa = PBXBuildFile; fileRef = A46398B71EDAF8D500CCB20B /* full_model.h5 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -420,6 +421,7 @@
 		A44277F91ED15FFB002B798B /* VideoCameraType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCameraType.swift; sourceTree = "<group>"; };
 		A44277FA1ED15FFB002B798B /* VideoCapture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCapture.swift; sourceTree = "<group>"; };
 		A44278661ED17C2B002B798B /* fc_model.h5 */ = {isa = PBXFileReference; lastKnownFileType = file; name = fc_model.h5; path = ../../../Train/fc_model.h5; sourceTree = "<group>"; };
+		A46398B71EDAF8D500CCB20B /* full_model.h5 */ = {isa = PBXFileReference; lastKnownFileType = file; path = full_model.h5; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -506,6 +508,7 @@
 			isa = PBXGroup;
 			children = (
 				A44278661ED17C2B002B798B /* fc_model.h5 */,
+				A46398B71EDAF8D500CCB20B /* full_model.h5 */,
 				A442767A1ED15C5F002B798B /* batch_normalized_binaries */,
 			);
 			path = network_params;
@@ -972,6 +975,7 @@
 				A442777F1ED15C5F002B798B /* bias_mixed_7_tower_conv_1.dat in Resources */,
 				A44277BF1ED15C5F002B798B /* weights_mixed_4_tower_conv.dat in Resources */,
 				A44277F01ED15C5F002B798B /* weights_mixed_tower_1_conv.dat in Resources */,
+				A46398B81EDAF8D600CCB20B /* full_model.h5 in Resources */,
 				A44277901ED15C5F002B798B /* bias_mixed_conv.dat in Resources */,
 				A44277661ED15C5F002B798B /* bias_mixed_5_tower_1_conv_2.dat in Resources */,
 				A442774D1ED15C5F002B798B /* bias_mixed_1_tower_conv_1.dat in Resources */,

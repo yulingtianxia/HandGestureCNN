@@ -25,7 +25,7 @@ import HDF5Kit
  - getting our convolution layer
  */
 
-private let h5FileName = "fc_model"
+private let h5FileName = "full_model"
 
 class SlimMPSCNNConvolution: MPSCNNConvolution{
     /**
@@ -297,9 +297,9 @@ func extractHDF5(h5Name: String) {
     var countOfFcLayer   = 0
     var partOfFileName = ""
     
-    for layerName in layerNames {
-        guard let layerGroup = file.openGroup(layerName) else {
-            fatalError("Failed to open group of \(layerName)")
+//    for layerName in layerNames {
+        guard let layerGroup = file.openGroup("sequential_1") else {
+            fatalError("Failed to open group of sequential_1")
         }
         for objectName in layerGroup.objectNames() {
             
@@ -359,5 +359,5 @@ func extractHDF5(h5Name: String) {
                 print(error)
             }
         }
-    }
+//    }
 }
